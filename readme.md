@@ -8,3 +8,14 @@ All the functions worked when tested using games from the example.json
 
 *Edits*
 Changed the getGameInfo function in the gameClass to format the data in the same structure as the json.
+
+
+**Step 4**
+*Additions:*
+Added the function from the FileReader resource provided in the task. Had to make some changes to the input type due to it originally being intended for text files. Also had to JSON.Parse the result of the reader and then i could import it as JSON to the localStorage using the function i created in Step 3.
+Also added the showMessage function from the FileReader resource as it may be useful for improving the visuals of the app later on.
+
+*Edits*
+Changed name of placeholder arrays that were previously called games to make way for the new array that was required in Step 4.
+Made the retrieveAllGamesFromLocalStorage use a for loop that is based on the localStorage.length and localStorage.key commands once i learned that they were a thing from: https://medium.com/@joeylee08/localstorage-101-persisting-browser-data-on-the-client-694cea0981b3#:~:text=localStorage%20is%20a%20global%20browser,and%20close%20the%20browser%20window.
+Kept the old function that retrieved games based on title in case it will be useful later for retrieving specific games.
