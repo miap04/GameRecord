@@ -1,7 +1,7 @@
 class Game {
     constructor(title, designer, artist, publisher, year, players, time, difficulty, url, playCount, personalRating) {
         this.title = title;
-        this.designer = designerpersonalRating;
+        this.designer = designer;
         this.artist = artist;
         this.publisher = publisher;
         this.year = year;
@@ -13,7 +13,19 @@ class Game {
         this.personalRating = personalRating;
     }
     getGameInfo() {
-        return this.title + this.designer + this.artist + this.publisher + this.year + this.players + this.time + this.difficulty + this.url + this.playCount + this.personalRating;
+        return {
+            title: this.title,
+            designer: this.designer,
+            artist: this.artist,
+            publisher: this.publisher,
+            year: this.year,
+            players: this.players,
+            time: this.time,
+            difficulty: this.difficulty,
+            url: this.url,
+            playCount: this.playCount,
+            personalRating: this.personalRating
+        };
     }
 }
 
