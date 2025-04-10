@@ -19,3 +19,10 @@ Also added the showMessage function from the FileReader resource as it may be us
 Changed name of placeholder arrays that were previously called games to make way for the new array that was required in Step 4.
 Made the retrieveAllGamesFromLocalStorage use a for loop that is based on the localStorage.length and localStorage.key commands once i learned that they were a thing from: https://medium.com/@joeylee08/localstorage-101-persisting-browser-data-on-the-client-694cea0981b3#:~:text=localStorage%20is%20a%20global%20browser,and%20close%20the%20browser%20window.
 Kept the old function that retrieved games based on title in case it will be useful later for retrieving specific games.
+
+**Step 5**
+*Additions:*
+Added a function to add a single game to the HTML. I did this by creating a gameEntry element, and then appending all the other elements to that element using appendChild. I had to create a CSS class to indent the text correctly as in the example provided. Then I created a function that adds all the games to the HTML by looping over the games array.
+
+*Edits*
+Removed console.log's that are no longer being used to test functions to clean up the code.
