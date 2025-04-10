@@ -34,3 +34,10 @@ Used addEventListener to add 1 to the playcount every time it was clicked, then 
 **Step 7**
 *Additions:*
 Added a form with a required input field for every piece of game info needed. Wasnt able to make the rating value number after the slider change within HTML, so I will have to add that on the next step as this step wasnt supposed to add code to app.mjs
+
+**Step 8**
+*Additions:*
+First i got all the form elements by their id. Then I added an eventListener for the submit on the form. Then I simply created a gameInfo array with the values that could then be sent to my saveGameToLocalStorage where it will be stored as an instance of the class into the localstorage. Afterwards it was then added to the HTML and i reset the form to add more games.
+
+*Edits*
+Change the difficulty from a text input to a drop down menu for better user experience

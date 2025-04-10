@@ -3,12 +3,28 @@ import Game from './models/gameClass.mjs';
 const importSource = document.getElementById('importSource');
 const fileContentDisplay = document.getElementById("fileContent");
 const messageDisplay = document.getElementById("message");
-let gameEntries = document.getElementById("gameEntries");
+
+const addGameForm = document.getElementById("addGameForm");
+const addedGameTitle = document.getElementById("gameTitle");
+const addedGameReleaseYear = document.getElementById("releaseYear");
+const addedGamePlayerCount = document.getElementById("playerCount");
+const addedGamePlayTime = document.getElementById("playTime");
+const addedGameDifficulty = document.getElementById("difficulty");
+const addedGameDesigner = document.getElementById("designer");
+const addedGameArtist = document.getElementById("artist");
+const addedGamePublisher = document.getElementById("publisher");
+const addedGameUrl = document.getElementById("bggListing");
+const addedGamePlayCount = document.getElementById("playCount");
+const addedGameRating = document.getElementById("rating");
+const ratingSliderValue = document.getElementById("ratingValue");
+
+
 
 
 let savedGameTitles = [];
 let games = [];
 games = retrieveAllGamesFromLocalStorage();
+let gameEntries = document.getElementById("gameEntries");
 
 
 function saveGameToLocalStorage(gameInfo) {
@@ -140,6 +156,33 @@ function addAllGamesToHTML() {
     }
 }
 
+
+addGameForm.addEventListener("submit", addGame);
+
+function addGame(event) {
+    event.preventDefault();
+    let gameInfo = {
+        title: addedGameTitle.value,
+        designer: addedGameDesigner.value,
+        artist: addedGameArtist.value,
+        publisher: addedGamePublisher.value,
+        year: addedGameReleaseYear.value,
+        players: addedGamePlayerCount.value,
+        time: addedGamePlayTime.value + " mins",
+        difficulty: addedGameDifficulty.value,
+        url: addedGameUrl.value,
+        playCount: addedGamePlayCount.value,
+        personalRating: ratingSliderValue.textContent
+    };
+    saveGameToLocalStorage(gameInfo);
+    addGameToHTML(gameInfo);
+    addGameForm.reset();
+    ratingSliderValue.textContent = addedGameRating.value;
+}
+
+addedGameRating.addEventListener("input", function () {
+    ratingSliderValue.textContent = addedGameRating.value;
+});
 
 let concordiaExample = new Game(
     "Concordia Duplicate For Testing",
