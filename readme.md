@@ -30,3 +30,7 @@ Removed console.log's that are no longer being used to test functions to clean u
 **Step 6**
 *Additions:*
 Used addEventListener to add 1 to the playcount every time it was clicked, then set the new playcount as the gameInfo value, and then saving the game again, overwriting the old games saved data. I did the same with the slider, making it so that every time the value is changed it sets the new value as the value for the current gameInfo, and then saves the game again.
+
+**Step 7**
+*Additions:*
+Added a form with a required input field for every piece of game info needed. Wasnt able to make the rating value number after the slider change within HTML, so I will have to add that on the next step as this step wasnt supposed to add code to app.mjs
