@@ -94,7 +94,14 @@ function addGameToHTML(gameInfo) {
     let gamePlayCountText = document.createElement("div");
     let gamePlayCountButton = document.createElement("button");
     gamePlayCountButton.textContent = "+";
-    gamePlayCountText.textContent = `Playcount: ${gameInfo.playCount}`;
+    gamePlayCountText.textContent = `Playcount: ${gameInfo.playCount} `;
+    gamePlayCountButton.addEventListener("click", function () {
+        gameInfo.playCount++;
+        gamePlayCountText.textContent = `Playcount: ${gameInfo.playCount} `;
+        gamePlayCountText.appendChild(gamePlayCountButton);
+        gamePlayCountButton.textContent = "+";
+        saveGameToLocalStorage(gameInfo);
+    });
     let gamePersonalRatingText = document.createElement("div");
     gamePersonalRatingText.textContent = `Rating: `;
     let gamePersonalRatingScore = document.createElement("span");
@@ -103,7 +110,13 @@ function addGameToHTML(gameInfo) {
     gamePersonalRatingSlider.type = "range";
     gamePersonalRatingSlider.min = 1;
     gamePersonalRatingSlider.max = 10;
+    gamePersonalRatingSlider.step = 1;
     gamePersonalRatingSlider.value = gameInfo.personalRating;
+    gamePersonalRatingSlider.addEventListener("input", function () {
+        gameInfo.personalRating = gamePersonalRatingSlider.value;
+        gamePersonalRatingScore.textContent = gameInfo.personalRating;
+        saveGameToLocalStorage(gameInfo);
+    });
     gameEntry.appendChild(gameEntryTitle);
     gameEntry.appendChild(gameYearPlayersTimeDifficulty);
     gameEntry.appendChild(document.createElement("br"));

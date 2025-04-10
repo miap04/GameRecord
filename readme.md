@@ -26,3 +26,7 @@ Added a function to add a single game to the HTML. I did this by creating a game
 
 *Edits*
 Removed console.log's that are no longer being used to test functions to clean up the code.
+
+**Step 6**
+*Additions:*
+Used addEventListener to add 1 to the playcount every time it was clicked, then set the new playcount as the gameInfo value, and then saving the game again, overwriting the old games saved data. I did the same with the slider, making it so that every time the value is changed it sets the new value as the value for the current gameInfo, and then saves the game again.
