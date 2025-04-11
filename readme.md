@@ -41,3 +41,10 @@ First i got all the form elements by their id. Then I added an eventListener for
 
 *Edits*
 Change the difficulty from a text input to a drop down menu for better user experience
+
+**Step 9**
+*Additions:*
+Added a delete game button to each game entry by appending it as a child. Then i added an eventListener which when the button is clicked, will remove the current game entry from the localStorage and will then loop through the games array where it will remove the title. Also added a linebreak after the delete button to make the UI more spread out
+
+*Edits*
+Removed the savedGameTitles array as it was redundant and replaced by the games array. Also removed the retrieveGameFromLocalStorageByTitle function as it serves no purpose.

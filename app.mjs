@@ -21,7 +21,6 @@ const ratingSliderValue = document.getElementById("ratingValue");
 
 
 
-let savedGameTitles = [];
 let games = [];
 games = retrieveAllGamesFromLocalStorage();
 let gameEntries = document.getElementById("gameEntries");
@@ -43,25 +42,6 @@ function saveGameToLocalStorage(gameInfo) {
     );
     let data = game.getGameInfo();
     localStorage.setItem(gameInfo.title, JSON.stringify(data));
-    savedGameTitles.push(gameInfo.title);
-}
-
-function retrieveGameFromLocalStorageByTitle(title) {
-    let data = localStorage.getItem(title);
-    let game = JSON.parse(data);
-    return new Game(
-        game.title,
-        game.designer,
-        game.artist,
-        game.publisher,
-        game.year,
-        game.players,
-        game.time,
-        game.difficulty,
-        game.url,
-        game.playCount,
-        game.personalRating
-    );
 }
 
 function retrieveAllGamesFromLocalStorage() {
@@ -72,6 +52,7 @@ function retrieveAllGamesFromLocalStorage() {
     }
     return retrievedGames;
 }
+
 
 function outputGamesAsJSON() {
     let retrievedGames = retrieveAllGamesFromLocalStorage();
@@ -133,6 +114,18 @@ function addGameToHTML(gameInfo) {
         gamePersonalRatingScore.textContent = gameInfo.personalRating;
         saveGameToLocalStorage(gameInfo);
     });
+    let deleteGameButton = document.createElement("button");
+    deleteGameButton.textContent = "Delete Game";
+    deleteGameButton.addEventListener("click", function () {
+        localStorage.removeItem(gameInfo.title);
+        for (let i = 0; i < games.length; i++) {
+            if (games[i].title === gameInfo.title) {
+                games.removeItem(i);
+                break;
+            }
+        }
+        gameEntries.removeChild(gameEntry);
+    });
     gameEntry.appendChild(gameEntryTitle);
     gameEntry.appendChild(gameYearPlayersTimeDifficulty);
     gameEntry.appendChild(document.createElement("br"));
@@ -147,7 +140,9 @@ function addGameToHTML(gameInfo) {
     gamePersonalRatingText.appendChild(gamePersonalRatingSlider);
     gamePersonalRatingText.appendChild(gamePersonalRatingScore);
     gameEntry.appendChild(gamePersonalRatingText);
+    gameEntry.appendChild(deleteGameButton);
     gameEntries.appendChild(gameEntry);
+    gameEntry.appendChild(document.createElement("br"));
 }
 
 function addAllGamesToHTML() {
@@ -177,7 +172,6 @@ function addGame(event) {
     saveGameToLocalStorage(gameInfo);
     addGameToHTML(gameInfo);
     addGameForm.reset();
-    ratingSliderValue.textContent = addedGameRating.value;
 }
 
 addedGameRating.addEventListener("input", function () {
