@@ -13,42 +13,55 @@
     <div id="message"></div>
     <h1>Add a game to the record</h1>
     <form id="addGameForm">
-        <label for="gameTitle">Game Title:</label>
+        <label for="gameTitle">Game Title*:</label>
         <input type="text" id="gameTitle" required><br><br>
-        <label for="releaseYear">Year of release:</label>
+        <label for="releaseYear">Year of release*:</label>
         <input type="number" id="releaseYear" required><br><br>
-        <label for="playerCount">Players:</label>
-        <input type="text" id="playerCount" required><br><br>
-        <label for="playTime">Time:</label>
+        <label for="playerCountMin">Minimum players*:</label>
+        <input type="number" id="playerCountMin" min="1" required><br><br>
+        <label for="playerCountMax">Maximum players : </label>
+        <input type="number" id="playerCountMax"><br><br>
+        <label for="playTime">Time:*</label>
         <input type="text" id="playTime" placeholder="Minutes" required><br><br>
-        <label for="difficulty">Difficulty:</label>
+        <label for="difficulty">Difficulty:*</label>
         <select id="difficulty" required>
-            <option value="light">Light</option>
-            <option value="lightMedium">Light-Medium</option>
-            <option value="medium">Medium</option>
-            <option value="mediumHeavy">Medium-Heavy</option>
+            <option value="Light">Light</option> 
+            <option value="Light-Medium">Light-Medium</option>
+            <option value="Medium">Medium</option>
+            <option value="Medium-Heavy">Medium-Heavy</option>
             <option value="Heavy">Heavy</option>
         </select><br><br>
-        <label for="designer">Designer:</label>
+        <label for="designer">Designer:*</label>
         <input type="text" id="designer" required><br><br>
-        <label for="artist">Artist:</label>
+        <label for="artist">Artist:*</label>
         <input type="text" id="artist" required><br><br>
-        <label for="publisher">Publisher:</label>
+        <label for="publisher">Publisher:*</label>
         <input type="text" id="publisher" required><br><br>
-        <label for="bggListing">BGG Listing:</label>
+        <label for="bggListing">BGG Listing:*</label>
         <input type="text" id="bggListing" placeholder="Link" required><br><br>
-        <label for="playCount">Play Count:</label>
-        <input type="number" id="playCount" min="0" required><br><br>
-        <label for="rating">Rating:</label>
-        <input type="range" id="rating" min="1" max="10" step="1" value="5">
+        <label for="playCount">Play Count:*</label>
+        <input type="number" id="playCount" required><br><br>
+        <label for="rating">Rating:*</label>
+        <input type="range" id="rating" min="0" max="10" step="1" value="5">
         <span id="ratingValue">5</span><br><br>
+        <div>*required fields</div><br><br>
         <button type="submit">Add Game</button>
     </form>
     <pre id="fileContent"></pre>
     <script src="app.mjs" type="module"></script>
     <h1>Game Record</h1>
+    <label for="sortBy">Sort by:</label>
+    <select id="sortBy">
+        <option value="ratingHigh">Rating (high to low)</option>
+        <option value="ratingLow">Rating (low to high)</option>
+        <option value="playerHigh">Player Count (high to low)</option>
+        <option value="playerLow">Player Count (low to high)</option>
+        <option value="playCountLow">Playcount (high to low)</option>
+        <option value="playCountHigh">Playcount (low to high)</option>
+        <option value="difficultyHeavy">Difficulty (heavy to light)</option>
+        <option value="difficultyLight">Difficulty (light to heavy)</option>
+    </select><br><br>
     <div id="gameEntries">
-
     </div>
 
 </body>

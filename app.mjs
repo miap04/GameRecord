@@ -7,7 +7,8 @@ const messageDisplay = document.getElementById("message");
 const addGameForm = document.getElementById("addGameForm");
 const addedGameTitle = document.getElementById("gameTitle");
 const addedGameReleaseYear = document.getElementById("releaseYear");
-const addedGamePlayerCount = document.getElementById("playerCount");
+const addedGameMaxPlayers = document.getElementById("playerCountMax");
+const addedGameMinPlayers = document.getElementById("playerCountMin");
 const addedGamePlayTime = document.getElementById("playTime");
 const addedGameDifficulty = document.getElementById("difficulty");
 const addedGameDesigner = document.getElementById("designer");
@@ -17,9 +18,19 @@ const addedGameUrl = document.getElementById("bggListing");
 const addedGamePlayCount = document.getElementById("playCount");
 const addedGameRating = document.getElementById("rating");
 const ratingSliderValue = document.getElementById("ratingValue");
+const sortBy = document.getElementById("sortBy");
+
+if (localStorage.getItem("sortBy") === null) {
+    localStorage.setItem("sortBy", "ratingHigh");
+}
+else {
+    sortBy.value = localStorage.getItem("sortBy");
+}
 
 
 
+
+const gameIdentifier = "G-"
 
 let games = [];
 games = retrieveAllGamesFromLocalStorage();
@@ -41,14 +52,16 @@ function saveGameToLocalStorage(gameInfo) {
         gameInfo.personalRating
     );
     let data = game.getGameInfo();
-    localStorage.setItem(gameInfo.title, JSON.stringify(data));
+    localStorage.setItem(gameIdentifier + gameInfo.title, JSON.stringify(data));
 }
 
 function retrieveAllGamesFromLocalStorage() {
     let retrievedGames = [];
     for (let i = 0; i < localStorage.length; i++) {
-        let game = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        retrievedGames.push(game);
+        if (localStorage.key(i).startsWith(gameIdentifier)) {
+            let game = JSON.parse(localStorage.getItem(localStorage.key(i)));
+            retrievedGames.push(game);
+        }
     }
     return retrievedGames;
 }
@@ -117,9 +130,9 @@ function addGameToHTML(gameInfo) {
     let deleteGameButton = document.createElement("button");
     deleteGameButton.textContent = "Delete Game";
     deleteGameButton.addEventListener("click", function () {
-        localStorage.removeItem(gameInfo.title);
+        localStorage.removeItem(gameIdentifier + gameInfo.title);
         for (let i = 0; i < games.length; i++) {
-            if (games[i].title === gameInfo.title) {
+            if (games[i].title === gameIdentifier + gameInfo.title) {
                 games.removeItem(i);
                 break;
             }
@@ -140,29 +153,94 @@ function addGameToHTML(gameInfo) {
     gamePersonalRatingText.appendChild(gamePersonalRatingSlider);
     gamePersonalRatingText.appendChild(gamePersonalRatingScore);
     gameEntry.appendChild(gamePersonalRatingText);
+    gameEntry.appendChild(document.createElement("br"));
     gameEntry.appendChild(deleteGameButton);
     gameEntries.appendChild(gameEntry);
     gameEntry.appendChild(document.createElement("br"));
+    gameEntry.appendChild(document.createElement("br"));
+
 }
 
 function addAllGamesToHTML() {
+    let difficultyOrder = ["Light", "Light-Medium", "Medium", "Medium-Heavy", "Heavy"];
+    if (sortBy.value === "ratingHigh") {
+        games.sort((b, a) => a.personalRating - b.personalRating);
+    }
+    else if (sortBy.value === "ratingLow") {
+        games.sort((a, b) => a.personalRating - b.personalRating);
+    }
+    else if (sortBy.value === "playCountHigh") {
+        games.sort((a, b) => a.playCount - b.playCount);
+    }
+    else if (sortBy.value === "playCountLow") {
+        games.sort((b, a) => a.playCount - b.playCount);
+    }
+    else if (sortBy.value === "playerLow") {
+        games.sort((a, b) => {
+            let aPlayers = a.players.split("–");
+            let bPlayers = b.players.split("–");
+            if (aPlayers.length === 1) {
+                aPlayers[1] = aPlayers[0];
+            }
+            if (bPlayers.length === 1) {
+                bPlayers[1] = bPlayers[0];
+            }
+            return aPlayers[1] - bPlayers[1];
+        });
+    }
+    else if (sortBy.value === "playerHigh") {
+        games.sort((a, b) => {
+            let aPlayers = a.players.split("–");
+            let bPlayers = b.players.split("–");
+            if (aPlayers.length === 1) {
+                aPlayers[1] = aPlayers[0];
+            }
+            if (bPlayers.length === 1) {
+                bPlayers[1] = bPlayers[0];
+            }
+            return bPlayers[1] - aPlayers[1];
+        });
+    }
+    else if (sortBy.value === "difficultyLight") {
+        games.sort((a, b) => {
+            return difficultyOrder.indexOf(a.difficulty) - difficultyOrder.indexOf(b.difficulty);
+        });
+    }
+    else if (sortBy.value === "difficultyHeavy") {
+        games.sort((a, b) => {
+            return difficultyOrder.indexOf(b.difficulty) - difficultyOrder.indexOf(a.difficulty);
+        });
+    }
+    gameEntries.innerHTML = "";
     for (let i = 0; i < games.length; i++) {
         addGameToHTML(games[i]);
     }
 }
+
+sortBy.addEventListener("change", function () {
+    localStorage.setItem("sortBy", sortBy.value);
+    location.reload();
+});
 
 
 addGameForm.addEventListener("submit", addGame);
 
 function addGame(event) {
     event.preventDefault();
+    let formattedPlayerCount;
+    if (addedGameMaxPlayers.value === "") {
+        formattedPlayerCount = addedGameMinPlayers.value;
+    }
+    else {
+        formattedPlayerCount = addedGameMinPlayers.value + "–" + addedGameMaxPlayers.value;
+    }
     let gameInfo = {
         title: addedGameTitle.value,
         designer: addedGameDesigner.value,
         artist: addedGameArtist.value,
         publisher: addedGamePublisher.value,
         year: addedGameReleaseYear.value,
-        players: addedGamePlayerCount.value,
+        players: formattedPlayerCount,
         time: addedGamePlayTime.value + " mins",
         difficulty: addedGameDifficulty.value,
         url: addedGameUrl.value,
@@ -172,40 +250,12 @@ function addGame(event) {
     saveGameToLocalStorage(gameInfo);
     addGameToHTML(gameInfo);
     addGameForm.reset();
+    location.reload();
 }
 
 addedGameRating.addEventListener("input", function () {
     ratingSliderValue.textContent = addedGameRating.value;
 });
-
-let concordiaExample = new Game(
-    "Concordia Duplicate For Testing",
-    "Mac Gerdts",
-    "Marina Fahrenbach",
-    "PD-Verlag",
-    2013,
-    "2–5",
-    "90 mins",
-    "Medium",
-    "https://boardgamegeek.com/boardgame/124361/concordia",
-    44,
-    9
-);
-
-
-let terraformingMarsExample = new Game(
-    "Terraforming Mars Duplicate For Testing",
-    "Jacob Fryxelius",
-    "Isaac Fryxelius",
-    "FryxGames",
-    2016,
-    "1–5",
-    "120 mins",
-    "Medium-Heavy",
-    "https://boardgamegeek.com/boardgame/167791/terraforming-mars",
-    136,
-    8
-);
 
 importSource.addEventListener('change', handleFileSelection);
 
@@ -229,8 +279,5 @@ function showMessage(message, type) {
     messageDisplay.textContent = message;
     messageDisplay.style.color = type === "error" ? "red" : "green";
 }
-
-let exampleJson = JSON.stringify([concordiaExample, terraformingMarsExample], null, 2);
-importGamesFromJSON(exampleJson);
 
 addAllGamesToHTML();

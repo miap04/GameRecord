@@ -48,3 +48,14 @@ Added a delete game button to each game entry by appending it as a child. Then i
 
 *Edits*
 Removed the savedGameTitles array as it was redundant and replaced by the games array. Also removed the retrieveGameFromLocalStorageByTitle function as it serves no purpose.
+
+**Step 10**
+*Additions:*
+Added a select option above the game entries to choose the sorting order, defaulted to sorting by the highest rating first. To make the choice of order persist accross refreshes I made an eventlistener that saved to sortBy value to the localStorage if it is changed and reload the page to apply the sort order. I also had to add a condition in the program to get the sortBy value upon loading the page.
+This broke the code for retrieving the games as it attempted to retrieve anything in the localStorage, therefore I had to add an identifier for the games and make it only retrieve objects starting with the identifier.
+To allow for sorting the games I used the .sort function to rearrange the games array before looping through it and adding all the games (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort). Sorting by playcount and rating was simple as they were already numerical values. For sorting by players I decided it made the most sense to sort by maximum amount of players, and thus i split the string which turned them into numbers and sorted them as numbers. However some games might not have a varying player count so I had to add a condition that checked if there were no maximum amount of players and thus treat the minimum as the maximum as they would functionally be the same. I also changed the addGame form to only accept numbers for player count and then the program adds the '-' in between to not allow for wrong inputs.
+Sorting by difficulty also proved difficult so I added an array displaying the difficulty order, then I used the indexOf command to convert the difficulties into numbers based on their position in the order (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf).
+Lastly I added basic CSS from the To-Do list task to improve the visuals.
+
+*Edits*
+Removed the example games from the code as this is the final commit.
